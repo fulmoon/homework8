@@ -1,4 +1,4 @@
-List exam2 = [
+String exam2 = """[
   {
     "userId": 1,
     "id": 1,
@@ -599,4 +599,4 @@ List exam2 = [
     "title": "at nam consequatur ea labore ea harum",
     "body": "cupiditate quo est a modi nesciunt soluta\nipsa voluptas error itaque dicta in\nautem qui minus magnam et distinctio eum\naccusamus ratione error aut"
   }
-];
+]""";
