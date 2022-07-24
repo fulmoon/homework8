@@ -13,10 +13,11 @@ class Homework9 extends StatelessWidget {
         title: const Text('FutureBuilder 예제'),
       ), //AppBar
       body: Center(
-        child: Expanded(
-          child: Column(
-            children: [
-              FutureBuilder<String>(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: FutureBuilder<String>(
                 future: getData(),
                 builder: (context, snapshot){
                   if (snapshot.hasError){
@@ -27,11 +28,17 @@ class Homework9 extends StatelessWidget {
 
                   if (!snapshot.hasData){
                     return const Center(
-                      child: Text('데이터가 없습니다'),
+                      child: CircularProgressIndicator(),
                     );
                   }
 
                   final String data = snapshot.data!;
+
+                  if (data.isEmpty){
+                    return const Center(
+                      child: Text('데이터가 크가가 0 입니다.'),
+                    );
+                  }
 
                   return SizedBox(
                     child: Text(
@@ -40,36 +47,41 @@ class Homework9 extends StatelessWidget {
                     ),
                   );
                 }),
+            ),
 
-              FutureBuilder<List<Map<String, dynamic>>>(
-                future: getList(),
-                builder: (context, snapshot){
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FutureBuilder<List<Map<String, dynamic>>>(
+                  future: getList(),
+                  builder: (context, snapshot){
 
-                  if (!snapshot.hasData){
-                    return const Center(
-                      //child: Text('데이터가 없습니다'),
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-
-                  final List<Map<String, dynamic>> users = snapshot.data!;
-
-                  return ListView.builder(
-                    itemBuilder: (BuildContext context, int index) {
-                      Map<String, dynamic> user = users[index];
-
-                      return Text(
-                        user['title'],
-                        style: const TextStyle(
-                          fontSize: 20,
-                        ),
+                    if (!snapshot.hasData){
+                      return const Center(
+                        //child: Text('데이터가 없습니다'),
+                        child: CircularProgressIndicator(),
                       );
                     }
-                  );
-                },
+
+                    final List<Map<String, dynamic>> users = snapshot.data!;
+
+                    return ListView.builder(
+                      itemBuilder: (BuildContext context, int index) {
+                        Map<String, dynamic> user = users[index];
+
+                        return Text(
+                          user['title'],
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
+                        );
+                      }
+                    );
+                  },
+                ),
               ),
-            ],
-          )
+            ),
+          ],
         ),
       ),
     );
@@ -79,6 +91,9 @@ class Homework9 extends StatelessWidget {
     await Future.delayed(const Duration(seconds: 1));
 
     return exam1.toString();
+
+    //throw Exception('Error!!');
+    //return '';
   }
 
   Future<List<Map<String, dynamic>>> getList() async {
